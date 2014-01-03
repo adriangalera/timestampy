@@ -35,12 +35,16 @@ if l==10:
 
 
 elif l==13:
-	date = datetime.fromtimestamp(int(timestampString)/1000,timezone);
+	date = datetime.fromtimestamp(int(timestampString)/1e3,timezone);
 	print date.strftime('%Y-%m-%d %H:%M:%S %z');
 
 elif l==8:
 	date = datetime.fromtimestamp(int(timestampString)*60,timezone);
 	print date.strftime('%Y-%m-%d %H:%M:%S %z');
+
+elif l==6:
+	date = datetime.fromtimestamp(int(timestampString)*3600,timezone);
+	print date.strftime('%Y-%m-%d %H:%M:%S %z');	
 
 else:
 	print("Timestamp format not correctly detected");
