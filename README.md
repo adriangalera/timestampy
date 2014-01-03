@@ -5,6 +5,7 @@ Python code to work with timestamps, currently works with timestamps in:
 - miliseconds (java System.currentMilis)
 - seconds (unix time)
 - minutes (custom applications)
+- hour (custom applications)
 
 The way to use it is:
 ```
