@@ -43,39 +43,30 @@ else:
 		print("Wrong number of parameters");
 		sys.exit(0);
 
-
-	l = len(timestampString[0]);
+	dateSt="";
+	for d in timestampString:
+		l = len(d);
 		
 
-	if l==10:
-		dateSt="";
-		for d in timestampString:
+		if l==10:
 			date = datetime.fromtimestamp(int(d),timezone);
-			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";
-		print dateSt;
+			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";		
 
 
-	elif l==13:
-		dateSt="";
-		for d in timestampString:
+		elif l==13:
 			date = datetime.fromtimestamp(int(d)/1e3,timezone);
 			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";
-		print dateSt;
 
-	elif l==8:
-		dateSt="";
-		for d in timestampString:
+		elif l==8:
 			date = datetime.fromtimestamp(int(d)*60,timezone);
 			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";
-		print dateSt;
 
-	elif l==6:
-		dateSt="";
-		for d in timestampString:
+		elif l==6:
 			date = datetime.fromtimestamp(int(d)*3600,timezone);
 			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+" \t";
-		print dateSt;
 
-	else:
-		print("Timestamp format not correctly detected");
-		sys.exit(0);
+		else:
+			print("Timestamp format not correctly detected");
+			sys.exit(0);
+
+	print dateSt;
