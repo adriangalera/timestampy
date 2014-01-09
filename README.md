@@ -21,6 +21,12 @@ or to calculate timestamp from date:
 timestamps.py -c "date string"
 ```
 
+or to calculate from json:
+```
+timestamps.py -j "json"
+```
+
+
 This program makes use of python pytz and python dateutils, which may not be installed in your system, in order to install it:
 ```
 pip install pytz
