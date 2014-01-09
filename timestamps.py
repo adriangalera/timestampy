@@ -85,8 +85,8 @@ else:
 		timestampString = sys.argv[1];
 		timestampString = timestampString.split("-");
 		
-		#Etc/GMT have the reversed symbol, GMT-1 actually is GMT+1
-		timezone = timezone("Etc/GMT-1");
+		#Etc/GMT have the reversed symbol, GMT-1 actually is GMT+1, but default is GMT+0
+		timezone = timezone("Etc/GMT+0");
 	elif len(sys.argv) == 3:
 		timestampString = sys.argv[1];
 		timestampString = timestampString.split("-");
