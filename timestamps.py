@@ -8,30 +8,28 @@ from dateutil import parser
 import time
 import simplejson as json
 
-def parseTimestampString(timestampString,timezone):
+def parseTimestampString(timestampString,timezone,labels=[]):
 	dateSt="";
-	for d in timestampString:
-		l = len(d);
 
+	for d in range(len(timestampString)):
+
+		l = len(timestampString[d]);
 		if l==10:
-			date = datetime.fromtimestamp(int(d),timezone);
-			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";		
-
+			date = datetime.fromtimestamp(int(timestampString[d]),timezone);		
 		elif l==13:
-			date = datetime.fromtimestamp(int(d)/1e3,timezone);
-			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";
-
+			date = datetime.fromtimestamp(int(timestampString[d])/1e3,timezone);
 		elif l==8:
-			date = datetime.fromtimestamp(int(d)*60,timezone);
-			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";
-
+			date = datetime.fromtimestamp(int(timestampString[d])*60,timezone);
 		elif l==6:
-			date = datetime.fromtimestamp(int(d)*3600,timezone);
-			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+" \t";
-
+			date = datetime.fromtimestamp(int(timestampString[d])*3600,timezone);
 		else:
 			print("Timestamp format not correctly detected "+d);
 			sys.exit(0);
+
+		if not labels:
+			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";		
+		else:
+			dateSt += labels[d]+" "+date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";
 
 	return dateSt;
 
@@ -53,12 +51,16 @@ if options.json:
 	#Forced GMT+0
 	timezone = timezone("GMT+0");
 	jsonObj = json.loads(options.json);
+
 	timestampString="";
+	nolive=False;
+	novod=False;
 	try:
 		for timestampPair in jsonObj[""]["LIVE"]:
 			timestampString+=str(timestampPair[0])+"-";
 	except:
-		print "No LIVE values";
+		nolive=True;
+		#print "No LIVE values";
 	
 	if timestampString:
 		timestampString = timestampString.split("-");
@@ -71,12 +73,24 @@ if options.json:
 		for timestampPair in jsonObj[""]["VOD"]:
 			timestampString+=str(timestampPair[0])+"-";
 	except:
-		print "No VOD values";
+		novod=True;
+		#print "No VOD values";
 	if timestampString:
 		timestampString = timestampString.split("-");
 		print "************** VOD TS ***********************\n"
 		print parseTimestampString(timestampString[0:-1],timezone)+"\n";
 		print "************** VOD TS ***********************\n"
+
+	#try json key-value format:
+	timestampLabels="";
+	if nolive==True and novod==True:
+		for t in jsonObj.items():
+			timestampString+=str(t[1])+"-";
+			timestampLabels+=str(t[0])+"-";
+		timestampString = timestampString.split("-");
+		labels = timestampLabels.split("-");
+		print parseTimestampString(timestampString[0:-1],timezone,labels[0:-1])+"\n";
+
 
 	sys.exit(0);
 
