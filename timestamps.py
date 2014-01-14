@@ -22,14 +22,16 @@ def parseTimestampString(timestampString,timezone,labels=[]):
 			date = datetime.fromtimestamp(int(timestampString[d])*60,timezone);
 		elif l==6:
 			date = datetime.fromtimestamp(int(timestampString[d])*3600,timezone);
+		elif timestampString[d]=="0":
+			date="";#ignore it but don't go to sys.exit
 		else:
 			print("Timestamp format not correctly detected "+d);
 			sys.exit(0);
-
-		if not labels:
-			dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";		
-		else:
-			dateSt += labels[d]+" "+date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";
+		if date:
+			if not labels:
+				dateSt += date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";		
+			else:
+				dateSt += labels[d]+" "+date.strftime('%Y-%m-%d %H:%M:%S %z')+"\t";
 
 	return dateSt;
 
